@@ -51,51 +51,102 @@
 					<h2>What's Up</h2>
 				</section>
 
-				<section width="10%" data-background="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBxBaMON4dAgHCBsjrVd-vJLcdXoLZC1d9UfPKdDIAFSpMzd50"></section>
-
-
-
 				<!-- Example of nested vertical slides -->
 				<section>
-					<section>
-						<h2>Vertical Slides</h2>
-						<p>Slides can be nested inside of each other.</p>
-						<p>Use the <em>Space</em> key to navigate through all slides.</p>
-						<br>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Nested slides are useful for adding additional detail underneath a high level horizontal slide.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>That's it, time to go back up.</p>
-						<br>
-						<a href="#/2">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="transform: rotate(180deg); -webkit-transform: rotate(180deg);">
-						</a>
+					<section data-background="#fff">
+						<img data-src="http://pre06.deviantart.net/0c49/th/pre/i/2004/336/5/2/civet_by_jiles.jpg" alt="Luwak" style="border: none; box-shadow: none" />
 					</section>
 				</section>
 
-				<section>
-					<h2>Slides</h2>
-					<p>
-						Not a coder? Not a problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slides.com" target="_blank">http://slides.com</a>.
-					</p>
-				</section>
 
 				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
-					</p>
-					<p>
-						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
+					<section>
+						<h2>Luwak</h2>
+						<p>
+							Luwak is animal that eat coffee beans and poop beans out as best coffee in the world.
+							<br>
+							The philosophy is vast internet data already rich in web pages kind, somehow for our application we need clean data. With luwak we can extract and scrape data from web pages.
+						</p>
+						<p>
+							<small>Source: <a href="https://github.com/faridlab/luwak">https://github.com/faridlab/luwak</a></small>
+						</p>
+					</section>
+					<section>
+						<h2>Case</h2>
+						<p class="fragment shrink">Matahari Mall is one of the biggest ecommerce in Indonesia</p>
+						<p class="fragment shrink">How they get all data at the initial launch the app?</p>
+						<p class="fragment fade-up">Scrapping</p>
+					</section>
 				</section>
+
+<section>
+	<h2>How to use Luwak</h2>
+<pre>
+<code class="hljs" style="word-wrap: break-word;">$ npm install luwak
+-- OR Global
+$ npm install -g luwak</code></pre>
+
+<p>
+	<small>Requirement: Nodejs | <a href="https://nodejs.org/en/">https://nodejs.org</a></small>
+</p>
+</section>
+
+<section>
+<pre>
+<code class="hljs" style="word-wrap: break-word;">'use strict';
+
+const luwak = require('../index');
+const url = require('url');
+const qs = require('querystring');
+const sprintf = require("sprintf-js").sprintf;
+const userAgent = require('../middlewares/user-agent.js');
+
+let target = [
+	'https://www.bukalapak.com/c/buku',
+	'?search%5Bkeywords%5D=buku',
+	'&from=omnisearch',
+	'&search_source=omnisearch_category'
+].join('');
+
+try {
+  let counter = 5;
+  let rowIndex = 0;
+  let s = luwak(target)
+    .use(userAgent('Googlebot/2.1 (+http://www.google.com/bot.html)'))
+    .filter('stripBracket', function (value) {
+      let matches = value.match(/\(([^)]+)\)/);
+      if (matches) {
+        return matches[1];
+      }
+      return value;
+    })
+    .select([{
+      $root: '.basic-products .product-display',
+      name: '.product-description h3 a',
+      price: '.product-price .amount | int:10',
+      img: '.product-media img@src',
+      seller: {
+        $root: '.product-seller',
+        username: '.user__name a',
+        city: '.user-city | trim',
+      },
+      rating: '.product__rating .rating | float',
+      reviewCount: '.product__rating .review__aggregate | stripBracket | int',
+      discount: '.product-discount-percentage-amount | int'
+    }])
+    .next('a.next_page@href')
+    .limit(5)
+    .fetch(function(row) {
+      console.log(sprintf('%3d. %s', rowIndex++, row.name));
+    })
+    .then(data => {
+      console.log('-------------- len', data);
+    })
+    .catch(err => console.error(err.stack));
+} catch(e) {
+  console.error(e.stack);
+}</code></pre>
+</section>
 
 				<section>
 					<h2>Touch Optimized</h2>
