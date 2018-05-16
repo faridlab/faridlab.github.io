@@ -66,6 +66,11 @@ recognition.onerror = function(event) {
   if(event.error == 'no-speech') {
     instructions.text('No speech was detected. Try again.');
   };
+
+  if(event.error == 'not-allowed') {
+    instructions.text('This page has beend blocked from accessing your microphone.');
+    alert("This page has beend blocked from accessing your microphone.");
+  };
 }
 
 
