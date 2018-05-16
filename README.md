@@ -1,4 +1,0 @@
-faridlab
-========
-
-All about me
