@@ -83,12 +83,14 @@ $('#start-record-btn').on('click', function(e) {
   if (noteContent.length) {
     noteContent += ' ';
   }
+  $('.input-single').addClass('active');
   recognition.start();
 });
 
 
 $('#pause-record-btn').on('click', function(e) {
   recognition.stop();
+  $('.input-single').removeClass('active');
   instructions.text('Voice recognition paused.');
 });
 

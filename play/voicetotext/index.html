@@ -13,15 +13,63 @@
         .speech {border: 1px solid #DDD; width: 300px; padding: 0; margin: 0}
         .speech input {border: 0; width: 240px; display: inline-block; height: 30px;}
         .speech img {float: right; width: 40px }
+
         #note-textarea {
             min-height: 100px;
-            background: url(http://i.imgur.com/cHidSVu.gif) right bottom no-repeat;
+            background: url(./assets/mic.png) right bottom no-repeat;
         }
 
-        #start-record {
+        .input-single.active #note-textarea {
+            min-height: 100px;
+            background: url(./assets/mic-active.png) right bottom no-repeat;
+        }
+
+        .input-single.active .pulse {
+            opacity: 0.5;
             float: right;
-            margin-top: -60px;
-            margin-right: 10px;
+            margin-top: -52px;
+            margin-right: 4px;
+            display: block;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #D41332;
+            cursor: pointer;
+            box-shadow: 0 0 0 rgb(212, 19, 50, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .input-single.active .pulse:hover {
+            animation: none;
+        }
+
+        @-webkit-keyframes pulse {
+            0% {
+                -webkit-box-shadow: 0 0 0 0 rgb(212, 19, 50, 0.4);
+            }
+            70% {
+                -webkit-box-shadow: 0 0 0 10px rgb(212, 19, 50, 0);
+            }
+            100% {
+                -webkit-box-shadow: 0 0 0 0 rgb(212, 19, 50, 0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                -moz-box-shadow: 0 0 0 0 rgb(212, 19, 50, 0.4);
+                box-shadow: 0 0 0 0 rgb(212, 19, 50, 0.4);
+            }
+
+            70% {
+                -moz-box-shadow: 0 0 0 10px rgb(212, 19, 50, 0);
+                box-shadow: 0 0 0 10px rgb(212, 19, 50, 0);
+            }
+
+            100% {
+                -moz-box-shadow: 0 0 0 0 rgb(212, 19, 50, 0);
+                box-shadow: 0 0 0 0 rgb(212, 19, 50, 0);
+            }
         }
     </style>
 </head>
@@ -36,6 +84,7 @@
             <h3>Add New Note</h3>
             <div class="input-single">
                 <textarea id="note-textarea" placeholder="Create a new note by typing or using voice recognition." rows="6"></textarea>
+                <span class="pulse"></span>
             </div>
             <button id="start-record-btn" title="Start Recording">Start Recognition</button>
             <button id="pause-record-btn" title="Pause Recording">Pause Recognition</button>
